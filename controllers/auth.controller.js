@@ -48,5 +48,28 @@ exports.signup = async(req,res)=>{
 }
 
 exports.signin = async(req,res)=>{
-    
+    const user = await User.findOne({userId:req.body.userId});
+    if(user == null){
+        res.status(400).send({
+            message: "Failed! User doesn't exist!"
+        });
+        return;
+    }
+
+    var passwordIsValid = bcrypt.compareSync(req.body.password,user.password);
+    if(!passwordIsValid){
+        return res.status(400).send({
+            accessToken: null,
+            message: "Invalid Password"
+        })
+    }
+    var token = jwt.sign({id:user.userId},config.secret,{
+        expiresIn:120
+    })
+    res.status(200).send({
+        name: user.name,
+        userId: user.userId,
+        accessToken: token,
+        userType:user.userType
+    })
 }

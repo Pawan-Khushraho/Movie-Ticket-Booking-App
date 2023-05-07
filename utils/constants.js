@@ -6,7 +6,7 @@ module.exports = {
     },
     userTypes:{
         customer:"CUSTOMER",
-        engineer:"CLIENT",
+        client:"CLIENT",
         admin: "ADMIN"
     },
     userStatus:{

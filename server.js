@@ -87,25 +87,33 @@ async function init() {
         });
 
         console.log("Movies inserted in the db");
-        //creating few initial sets of theatre
+       
+       
+
+    } catch (e) {
+        console.error(e.message);
+    }
+
+
+    try {
+         //creating few initial sets of theatre
         await Theatre.collection.drop();
         await Theatre.create({
             name:"FunCinemas",
             city:"Bangalore",
             description:"Top class Theatre",
             pinCode:560052,
-            movies:[]
+            
         })
         await Theatre.create({
             name:"PVR",
             city:"Bangalore",
             description:"Top class Theatre",
             pinCode:560052,
-            movies:[]
+            
         })
 
         console.log("theatre created")
-
     } catch (e) {
         console.error(e.message);
     }
@@ -127,6 +135,7 @@ async function init() {
 require('./routes/movie.routes')(app);
 require("./routes/theatre.routes")(app);
 require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
 
 app.listen(serverConfig.PORT,()=>{
     console.log(`Application Started on port no. ${serverConfig.PORT}`)
