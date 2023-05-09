@@ -30,7 +30,7 @@ db.once("open",()=>{
 async function init() {
     await Movie.collection.drop();
     try {
-        await Movie.create({
+        var movie1 =await Movie.create({
             name: "Bachhan Pandey",
             description: "Comedy Masala Movie",
             casts: ["Akshay Kumar", "Jacqueline Fernandiz"],
@@ -41,7 +41,7 @@ async function init() {
             releaseDate: "18-03-2022",
             releaseSatus: "RELEASED"
         });
-        await Movie.create({
+        var movie2 = await Movie.create({
             name: "Jalsa",
             description: "Intense Drama Movie",
             casts: ["Vidya Balan", "Shefali Shah"],
@@ -103,14 +103,14 @@ async function init() {
             city:"Bangalore",
             description:"Top class Theatre",
             pinCode:560052,
-            
+            movies:[movie1._id,movie2._id]
         })
         await Theatre.create({
             name:"PVR",
             city:"Bangalore",
             description:"Top class Theatre",
             pinCode:560052,
-            
+            movies:[movie1._id,movie2._id]
         })
 
         console.log("theatre created")
@@ -136,6 +136,8 @@ require('./routes/movie.routes')(app);
 require("./routes/theatre.routes")(app);
 require("./routes/auth.routes")(app);
 require("./routes/user.routes")(app);
+require('./routes/booking.routes')(app);
+
 
 app.listen(serverConfig.PORT,()=>{
     console.log(`Application Started on port no. ${serverConfig.PORT}`)

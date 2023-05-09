@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const theatreSchema = new mongoose.Schema({
+let theatreSchema = new mongoose.Schema({
 
     name: {
         type: String,
@@ -33,9 +33,9 @@ const theatreSchema = new mongoose.Schema({
             return Date.now();
         }
     },
-    movies:{
-        type:[mongoose.SchemaType.ObjectId],
-        ref:"Movie"
+    movies: {
+        type: [mongoose.SchemaTypes.ObjectId],
+        ref: "Movie"
     }
 
 })

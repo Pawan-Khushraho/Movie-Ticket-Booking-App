@@ -1,6 +1,6 @@
 const User = require('../models/user.model');
 const constants = require('../utils/constants');
-var brcrypt = require("bcryptjs");
+var bcrypt = require("bcryptjs");
 var jwt = require('jsonwebtoken');
 const config = require('../configs/auth.config');
 
@@ -21,7 +21,7 @@ exports.signup = async(req,res)=>{
         userId: req.body.userId,
         email: req.body.email,
         userType: req.body.userType,
-        password: brcrypt.hashSync(req.body.password,8),
+        password: bcrypt.hashSync(req.body.password,8),
         userStatus: userStatus
     }
 
@@ -56,9 +56,16 @@ exports.signin = async(req,res)=>{
         return;
     }
 
+    if(user.userStatus != "APPROVED"){
+        res.status(200).send({
+            message:"Can't allow login as user is not approved"
+        });
+        return;
+    }
+
     var passwordIsValid = bcrypt.compareSync(req.body.password,user.password);
     if(!passwordIsValid){
-        return res.status(400).send({
+        return res.status(401).send({
             accessToken: null,
             message: "Invalid Password"
         })
@@ -69,7 +76,9 @@ exports.signin = async(req,res)=>{
     res.status(200).send({
         name: user.name,
         userId: user.userId,
+        email:user.email,
+        userType:user.userType,
+        userStatus:user.userStatus,
         accessToken: token,
-        userType:user.userType
     })
 }
