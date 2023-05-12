@@ -20,6 +20,10 @@ module.exports = {
         cancelled:"CANCELLED",
         expired: "EXPIRED"
     },
-    ticketPrice:150
+    ticketPrice:150,
+    paymentStatus:{
+        success:"SUCCESS",
+        failed:"FAILED"
+    }
 }
 
