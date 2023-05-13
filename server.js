@@ -14,18 +14,42 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
-
-mongoose.connect(dbConfig.DB_URL);
-
-const db = mongoose.connection;
-db.on("error",()=>{
-    console.log("error while connecting to db");
-})
-db.once("open",()=>{
-    init()
-    console.log("connected to MongoDB");
+if(process.env.NODE_ENV === "production"){
     
-})
+        /* mongoose.connect(dbConfig.PRODUCTION_DB_URL,
+            {useNewUrlParser:true,useUnifiedTopology:true},()=>{
+                console.log("connected to production mongoDb");
+                init();
+            }) */
+
+         mongoose.connect(dbConfig.PRODUCTION_DB_URL);
+         const db = mongoose.connection;
+         db.on("error",()=>{
+            console.log("error while connecting to production mongoDb");
+        })
+        db.once("open",()=>{
+            init()
+            console.log("connected to production mongoDb");
+            
+        })
+         
+
+    
+}else{
+    mongoose.connect(dbConfig.DB_URL);
+
+    const db = mongoose.connection;
+    db.on("error",()=>{
+        console.log("error while connecting to db");
+    })
+    db.once("open",()=>{
+        init()
+        console.log("connected to MongoDB");
+        
+    })
+}
+
+
 
 async function init() {
     await Movie.collection.drop();
